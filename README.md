@@ -2,6 +2,8 @@
 
 Your task is to write a recorder and player of pen and finger events for Android devices.
 
+You can use the [MainActivity](https://github.com/Heikofant/TuCAN_Exercise/blob/master/TuCAN_Exercise_Android/app/src/main/java/org/tucantest/tucan_exercise_android/MainActivity.java) as a start.
+
 A sample CSV file is saved in [./TuCAN.csv](https://github.com/Heikofant/TuCAN_Exercise/blob/master/TUCAN.csv).
 
 ## Recorder
