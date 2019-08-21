@@ -1,0 +1,6 @@
+EventTime;EventTimeNano;HistoricalEventTime;HistoricalEventTimeNano;EventType;ToolType;MotionEventType;ActionMasked;Action;X;Y;Z;Pressure;Orientation;Tilt;ButtonState;HistoricalX;HistoricalY;HistoricalZ;HistoricalOrientation;HistoricalPressure;HistoricalTilt
+;;;;Main;;;;;;;;;;;;;;;;;
+;;;;Historical;;;;;;;;;;;;;;;;;
+;;;;Historical;;;;;;;;;;;;;;;;;
+;;;;Historical;;;;;;;;;;;;;;;;;
+;;;;Historical;;;;;;;;;;;;;;;;;

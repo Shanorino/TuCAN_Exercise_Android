@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Spen_Light_ProgramGuide</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- Settings -->
+    <string name="cancel">Cancel</string>
+    <string name="done">Done</string>
+    <string name="description" translatable="false">ImageView</string>
+    <string name="hintText" translatable="false">hintText</string>
+    <string name="spd" translatable="false">.spd</string>
+    <string name="spp" translatable="false">.spp</string>
+    <string name="png" translatable="false">.png</string>
+    <string name="Title" translatable="false">Title</string>
+    <string name="defaultPenBtn">Default PenList</string>
+    <string name="customPenBtn">Custom PenList</string>
+    <string name="notepadBtn">NotePad</string>
+    <string name="degrees">°</string>
+
+</resources>

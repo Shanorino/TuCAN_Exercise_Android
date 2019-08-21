@@ -1,0 +1,40 @@
+apply plugin: 'com.android.application'
+android {
+    compileSdkVersion 25
+    buildToolsVersion '28.0.2'
+
+    defaultConfig {
+        applicationId "com.samsung.spensdk3.example"
+        minSdkVersion 21
+        targetSdkVersion 25
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+    splits{
+        abi{
+            enable true
+            reset()
+            include 'armeabi-v7a'
+        }
+    }
+}
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+dependencies {
+    compile files('libs/sdk-v1.0.0.jar')
+    fileTree(dir: 'libs', include: '*.aar').each {
+        File file ->dependencies.add("compile", [name: file.name.lastIndexOf('.').with { it != -1 ? file.name[0..<it] : file.name }, ext: 'aar'])
+    }
+    compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.android.support:support-annotations:25.0.0'
+    compile 'com.android.support:support-v13:25.3.1'
+}

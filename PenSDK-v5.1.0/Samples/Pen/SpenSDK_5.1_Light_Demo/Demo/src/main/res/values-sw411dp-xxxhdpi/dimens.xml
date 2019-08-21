@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Page navi panel -->
+    <dimen name="pagenavi_w">120dp</dimen>
+    <dimen name="pagenavi_h">30dp</dimen>
+    <dimen name="pagenavi_padding_bottom">20dp</dimen>
+    <dimen name="page_btn_size">28dp</dimen>
+    <dimen name="page_btn_margin">1.5dp</dimen>
+    <dimen name="page_btn_padding">5dp</dimen>
+
+</resources>

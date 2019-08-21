@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Spen_Light_ProgramGuide</string>
+    <string name="action_settings">Settings</string>
+    
+<!--Settings -->
+    <string name="cancel">Cancel</string>
+    <string name="done">Done</string>
+    
+</resources>

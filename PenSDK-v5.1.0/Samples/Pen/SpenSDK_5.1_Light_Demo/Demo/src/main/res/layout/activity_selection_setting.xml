@@ -1,0 +1,142 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:contentDescription="@string/cancel"
+    android:orientation="vertical"
+    tools:context=".PenSample3_1_SelectionSetting" >
+
+    <LinearLayout
+        android:id="@+id/tool_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <ImageView
+            android:id="@+id/selectionBtn"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_margin="1dip"
+            android:layout_weight="1"
+            android:background="@drawable/selector_tool_bg"
+            android:contentDescription="@string/description"
+            android:src="@drawable/selector_singleselect" />
+
+        <ImageView
+            android:id="@+id/penBtn"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_margin="1dip"
+            android:layout_weight="1"
+            android:background="@drawable/selector_tool_bg"
+            android:contentDescription="@string/description"
+            android:src="@drawable/selector_pen" />
+
+        <ImageView
+            android:id="@+id/strokeObjBtn"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_margin="1dip"
+            android:layout_weight="1"
+            android:background="@drawable/selector_tool_bg"
+            android:contentDescription="@string/description"
+            android:src="@drawable/selector_gesture" />
+
+        <ImageView
+            android:id="@+id/saveFileBtn"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_margin="1dip"
+            android:layout_weight="1"
+            android:background="@drawable/selector_tool_bg"
+            android:contentDescription="@string/description"
+            android:src="@drawable/selector_save" />
+
+        <ImageView
+            android:id="@+id/loadFileBtn"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_margin="1dip"
+            android:layout_weight="1"
+            android:background="@drawable/selector_tool_bg"
+            android:contentDescription="@string/description"
+            android:src="@drawable/selector_open" />
+
+        <ImageView
+            android:id="@+id/addPageBtn"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_margin="1dip"
+            android:layout_weight="1"
+            android:background="@drawable/selector_tool_bg"
+            android:contentDescription="@string/description"
+            android:src="@drawable/selector_page" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/spenViewContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <RelativeLayout
+                android:id="@+id/spenViewLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/settingTextLayout" >
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="@dimen/pagenavi_w"
+            android:layout_height="@dimen/pagenavi_h"
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_marginBottom="@dimen/pagenavi_padding_bottom"
+            android:background="@drawable/pagenavi_bg"/>
+
+        <RelativeLayout
+            android:layout_width="@dimen/pagenavi_w"
+            android:layout_height="@dimen/pagenavi_h"
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_marginBottom="@dimen/pagenavi_padding_bottom">
+
+            <ImageView
+                android:id="@+id/btnPrevPage"
+                android:layout_width="@dimen/page_btn_size"
+                android:layout_height="@dimen/page_btn_size"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="@dimen/page_btn_margin"
+                android:background="@drawable/page_circle"
+                android:src="@drawable/selector_prev_page"
+                android:padding="@dimen/page_btn_padding"
+                android:layout_centerVertical="true"/>
+
+            <TextView
+                android:id="@+id/textPageIndex"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="1/1" />
+
+            <ImageView
+                android:id="@+id/btnNextPage"
+                android:layout_width="@dimen/page_btn_size"
+                android:layout_height="@dimen/page_btn_size"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/page_btn_margin"
+                android:background="@drawable/page_circle"
+                android:src="@drawable/selector_next_page"
+                android:padding="@dimen/page_btn_padding"
+                android:layout_centerVertical="true"/>
+        </RelativeLayout>
+        
+        <FrameLayout
+            android:id="@+id/settingView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
+
+</LinearLayout>
