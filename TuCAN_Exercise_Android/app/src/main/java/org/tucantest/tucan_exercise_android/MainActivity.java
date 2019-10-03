@@ -316,7 +316,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
             ar.setX(e.getX());
             ar.setY(e.getY());
-            ar.setZ(e.getAxisValue(MotionEvent.AXIS_Z));
+            ar.setZ(e.getAxisValue(MotionEvent.AXIS_DISTANCE));
             ar.setTilt(e.getAxisValue(MotionEvent.AXIS_TILT));
             ar.setEventTime(e.getEventTime());
             ar.setEventTimeNano(MotionEventExtensions.getEventTimeNano(e));
@@ -327,7 +327,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         else if (eventType.equals("Historical")){
             ar.setHistoricalX(e.getHistoricalX(pos));
             ar.setHistoricalY(e.getHistoricalY(pos));
-            ar.setHistoricalZ(e.getHistoricalAxisValue(MotionEvent.AXIS_Z, pos));
+            ar.setHistoricalZ(e.getHistoricalAxisValue(MotionEvent.AXIS_DISTANCE, pos));
             ar.setHistoricalTilt(e.getHistoricalAxisValue(MotionEvent.AXIS_TILT, pos));
             ar.setHistoricalEventTime(e.getHistoricalEventTime(pos));
             ar.setHistoricalEventTimeNano(MotionEventExtensions.getHistoricalEventTimeNano(e, pos));
@@ -385,7 +385,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                                         0
                                 );
                                 if (ar.getAction().equals("Hover")) {
-                                    setPenColor(Color.RED); // plus an offset for color gradient
+                                    setPenColor(generateGradientColor(Color.valueOf(Color.BLUE), Color.valueOf(Color.CYAN), ar.getZ())); // plus an offset for color gradient
                                     mSpenSurfaceView.dispatchTouchEvent(motionEvent);
                                 }
                                 else if (ar.getAction().equals("Touch")) {
@@ -408,7 +408,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                                         0
                                 );
                                 if (ar.getAction().equals("Hover")) {
-                                    setPenColor(Color.RED); // plus an offset for color gradient
+                                    setPenColor(generateGradientColor(Color.valueOf(Color.BLUE), Color.valueOf(Color.CYAN), ar.getHistoricalZ())); // plus an offset for color gradient
                                     mSpenSurfaceView.dispatchTouchEvent(motionEvent);
                                 }
                                 else if (ar.getAction().equals("Touch")) {
@@ -476,5 +476,14 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         if (spFile.exists())
             spFile.delete();
         Toast.makeText(this, "History deleted!", Toast.LENGTH_SHORT).show();
+    }
+
+    private int generateGradientColor(Color c1, Color c2, float distance){
+        float ratio = (float)distance / (float)50;
+        int red = (int)(c2.red() * ratio + c1.red() * (1 - ratio));
+        int green = (int)(c2.green() * ratio + c1.green() * (1 - ratio));
+        int blue = (int)(c2.blue() * ratio + c1.blue() * (1 - ratio));
+        Color c = Color.valueOf(red, green, blue);
+        return c.toArgb();
     }
 }
