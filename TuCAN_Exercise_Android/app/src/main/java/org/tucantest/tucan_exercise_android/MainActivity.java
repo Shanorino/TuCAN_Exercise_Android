@@ -97,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                     replayStatus = 1;
                     btn_play.setText("Stop Playing");
                     btn_pause.setVisibility(View.VISIBLE);
+                    // "csv" or "db" here to decide the data source
                     loadRecordAndDraw("db");
                 } else if (replayStatus == 1){
                     resetButtons();
@@ -132,6 +133,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 } else if (replayStatus == 2){
                     replayStatus = 1;
                     btn_pause.setText("Pause");
+                    // "csv" or "db" here to decide the data source
                     loadRecordAndDraw("db");
                 }
             }
@@ -524,8 +526,10 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                     }
                 }).start();
             }
-            else
+            else {
+                resetButtons();
                 Toast.makeText(getApplicationContext(), "No actions found!", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -568,12 +572,16 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
     // delete history (csv file, shared preference, db, etc...)
     private void deleteHistory(){
+        // delete csv files
         File csvFile = new File(getFilesDir().getAbsolutePath() + File.separator + "new_csv_file" + ".csv");
         if (csvFile.exists())
             csvFile.delete();
+        // delete SharedPreferences
         File spFile= new File("/data/data/"+getPackageName()+"/shared_prefs","org.tucantest.tucan_exercise_android_preferences.xml");
         if (spFile.exists())
             spFile.delete();
+        // delete database
+        dbHelper.deleteDatabase(getApplicationContext());
         Toast.makeText(this, "History deleted!", Toast.LENGTH_SHORT).show();
     }
 
