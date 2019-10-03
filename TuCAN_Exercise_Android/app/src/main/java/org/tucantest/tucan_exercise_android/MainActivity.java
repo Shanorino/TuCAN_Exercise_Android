@@ -9,6 +9,7 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.icu.text.AlphabeticIndex;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -96,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                     replayStatus = 1;
                     btn_play.setText("Stop Playing");
                     btn_pause.setVisibility(View.VISIBLE);
-                    loadRecordFromCSV();
+                    loadRecordAndDraw("db");
                 } else if (replayStatus == 1){
                     resetButtons();
                     mSpenPageDoc = mSpenNoteDoc.appendPage();
@@ -131,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 } else if (replayStatus == 2){
                     replayStatus = 1;
                     btn_pause.setText("Pause");
-                    loadRecordFromCSV();
+                    loadRecordAndDraw("db");
                 }
             }
         });
@@ -159,6 +160,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             }
             // Record the list
             Recorder.writeRecordInCSV(getApplicationContext(), arList);
+            Recorder.writeRecordIntoDB(getApplicationContext(), arList);
         }
         return false;
     }
@@ -179,6 +181,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             }
             // Record the list
             Recorder.writeRecordInCSV(getApplicationContext(), arList);
+            Recorder.writeRecordIntoDB(getApplicationContext(), arList);
         }
         return false;
     }
@@ -343,7 +346,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     /**
      * Load CSV in background
      */
-    public class loadRecordFromCSV extends AsyncTask<Void, Void, List<ActionRecord>> {
+    public class loadRecordFromCSVAndDraw extends AsyncTask<Void, Void, List<ActionRecord>> {
 
         @Override
         protected List<ActionRecord> doInBackground(Void... voids) {
@@ -433,9 +436,105 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         }
     }
 
+    /**
+     * Load DB in background
+     */
+    public class loadRecordFromDBAndDraw extends AsyncTask<Void, Void, List<ActionRecord>> {
+
+        @Override
+        protected List<ActionRecord> doInBackground(Void... voids) {
+            currentARList = Player.readFromDB(getApplicationContext());
+            return currentARList;
+        }
+
+        @Override
+        protected void onPostExecute(final List<ActionRecord> currentARList) {
+            super.onPostExecute(currentARList);
+            if (currentARList != null) {
+                Toast.makeText(getApplicationContext(), currentARList.size() + " actions found!", Toast.LENGTH_SHORT).show();
+//                MotionEvent.PointerProperties pp = new MotionEvent.PointerProperties();
+//                pp.id = 0;
+//                pp.toolType = MotionEvent.TOOL_TYPE_STYLUS;
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (int i=pausedAt; i<currentARList.size(); i++, pausedAt++){
+                            if (replayStatus!=1)
+                                break;
+                            ActionRecord ar = currentARList.get(i);
+                            convertHoverToTouch(ar);
+                            long downTime = SystemClock.uptimeMillis();
+                            long eventTime = SystemClock.uptimeMillis() + 100;
+                            if (ar.getEventType().equals("Main")) {
+                                MotionEvent motionEvent = MotionEvent.obtain(
+                                        downTime,
+                                        eventTime,
+                                        ar.getMotionEventType(),
+                                        ar.getX(),
+                                        ar.getY(),
+                                        ar.getPressure(),
+                                        1.0f,
+                                        0,
+                                        0.01f,
+                                        0.01f,
+                                        0,
+                                        0
+                                );
+                                if (ar.getAction().equals("Hover")) {
+                                    setPenColor(generateGradientColor(Color.valueOf(Color.BLUE), Color.valueOf(Color.CYAN), ar.getZ())); // plus an offset for color gradient
+                                    mSpenSurfaceView.dispatchTouchEvent(motionEvent);
+                                }
+                                else if (ar.getAction().equals("Touch")) {
+                                    setPenColor(Color.BLACK);
+                                    mSpenSurfaceView.dispatchTouchEvent(motionEvent);
+                                }
+                            } else{
+                                MotionEvent motionEvent = MotionEvent.obtain(
+                                        downTime,
+                                        eventTime,
+                                        ar.getMotionEventType(),
+                                        ar.getHistoricalX(),
+                                        ar.getHistoricalY(),
+                                        ar.getPressure(),
+                                        1.0f,
+                                        0,
+                                        0.01f,
+                                        0.01f,
+                                        0,
+                                        0
+                                );
+                                if (ar.getAction().equals("Hover")) {
+                                    setPenColor(generateGradientColor(Color.valueOf(Color.BLUE), Color.valueOf(Color.CYAN), ar.getHistoricalZ())); // plus an offset for color gradient
+                                    mSpenSurfaceView.dispatchTouchEvent(motionEvent);
+                                }
+                                else if (ar.getAction().equals("Touch")) {
+                                    setPenColor(Color.BLACK);
+                                    mSpenSurfaceView.dispatchTouchEvent(motionEvent);
+                                }
+                            }
+                        }
+                        // reset if replay completed
+                        if (pausedAt == currentARList.size())
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    resetButtons();
+                                }
+                            });
+                    }
+                }).start();
+            }
+            else
+                Toast.makeText(getApplicationContext(), "No actions found!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     // load in background and play
-    private void loadRecordFromCSV(){
-        new loadRecordFromCSV().execute();
+    private void loadRecordAndDraw(String source){
+        if (source.equals("csv"))
+            new loadRecordFromCSVAndDraw().execute();
+        else // from DB
+            new loadRecordFromDBAndDraw().execute();
     }
 
     // hover to touch so it can be visualized. 9 7 10 --> 0 2 1

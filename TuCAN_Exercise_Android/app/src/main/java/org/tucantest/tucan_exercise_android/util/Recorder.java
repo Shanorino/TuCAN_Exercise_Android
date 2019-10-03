@@ -2,6 +2,7 @@ package org.tucantest.tucan_exercise_android.util;
 
 import android.content.Context;
 
+import org.tucantest.tucan_exercise_android.db.BackgroundDB;
 import org.tucantest.tucan_exercise_android.model.ActionRecord;
 
 import java.io.BufferedWriter;
@@ -51,7 +52,10 @@ public class Recorder {
         }
     }
 
-    public static void writeRecordIntoDB(List<ActionRecord> arList){
+    public static void writeRecordIntoDB(Context context, List<ActionRecord> arList){
+        BackgroundDB backgroundDB = new BackgroundDB();
+        BackgroundDB.BackgroundUpdateAllRecordDB dbWorker = backgroundDB.new BackgroundUpdateAllRecordDB(context, arList);
+        dbWorker.execute();
 
     }
 

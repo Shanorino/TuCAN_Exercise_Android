@@ -1,7 +1,14 @@
 package org.tucantest.tucan_exercise_android.util;
 
+import android.animation.ArgbEvaluator;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
+import org.tucantest.tucan_exercise_android.db.ActionRecordTable;
+import org.tucantest.tucan_exercise_android.db.CursorToActionRecordConverter;
+import org.tucantest.tucan_exercise_android.db.DatabaseHelper;
 import org.tucantest.tucan_exercise_android.model.ActionRecord;
 
 import java.io.File;
@@ -56,8 +63,25 @@ public class Player {
         return arList;
     }
 
-    public static List<ActionRecord> readFromDB(){
+    public static List<ActionRecord> readFromDB(Context context){
+        DatabaseHelper dbHelper;
+        dbHelper = DatabaseHelper.getInstance(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
         List<ActionRecord> arList = new ArrayList<>();
+
+        String selection = null;
+        String[] selectionArgs = null;
+        final Cursor c = db.query(ActionRecordTable.TABLE_NAME, ActionRecordTable.fullProjection, selection, selectionArgs, null, null, null);
+        if( c != null && c.getCount() > 0 ){
+            arList = CursorToActionRecordConverter.convertToListFromCursor(c);
+        }
+        else{
+            Log.d("TAG", "DEBUG: MainActivity: (ActionRecord) Database is empty!");
+            arList = null;
+        }
+        if (c != null)
+            c.close();
         return arList;
+
     }
 }

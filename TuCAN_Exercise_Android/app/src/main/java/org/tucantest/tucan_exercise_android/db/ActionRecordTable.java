@@ -76,7 +76,7 @@ public class ActionRecordTable implements BaseColumns {
             + COLUMN_PRESSURE + " REAL DEFAULT 0, "
             + COLUMN_ORIENTATION + " REAL DEFAULT 0, "
             + COLUMN_TILT + " REAL DEFAULT 0, "
-            + COLUMN_BUTTON_STATE + "INTEGER DEFAULT 0, "
+            + COLUMN_BUTTON_STATE + " INTEGER DEFAULT 0, "
             + COLUMN_HISTORICAL_X + " REAL DEFAULT 0, "
             + COLUMN_HISTORICAL_Y + " REAL DEFAULT 0, "
             + COLUMN_HISTORICAL_Z + " REAL DEFAULT 0, "
